@@ -7,7 +7,6 @@ import { formatJson as formatJsonApi } from '../../api/jsonFormatter';
 
 
 export function JsonFormatter() {
-  const [data, setData] = useState<[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -278,6 +277,7 @@ export function JsonFormatter() {
       <div className="flex items-center justify-center gap-3">
         <Button
           onClick={formatJson}
+          disabled={!loading}
           className="bg-purple-600 hover:bg-purple-700 text-white px-6 h-9 text-sm font-medium"
         >
           Format
@@ -285,12 +285,15 @@ export function JsonFormatter() {
         <Button
           onClick={clearAll}
           variant="ghost"
+          disabled={!loading}
           className="text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900 h-9 text-sm"
         >
           <Trash2 className="size-3.5 mr-2" />
           Clear
         </Button>
+        <span>{error}</span>
       </div>
-    </div>
+      <span>version: v02022026-1</span>
+      </div>
   );
 }
