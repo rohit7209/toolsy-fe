@@ -28,28 +28,47 @@ jobs:
       - name: Build project
         run: npm run build
 
+      # ✅ Generate release id
+      - name: Generate release id
+        run: echo "RELEASE=$(date +%s)" >> $GITHUB_ENV
 
-      ###################################
-      # Copy dist to LIGHTSAIL
-      ###################################
-      - name: Deploy via SCP
+
+      # Upload build to temp folder
+      - name: Upload build
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.LIGHTSAIL_HOST }}
-          username: ${{ secrets.LIGHTSAIL_USER }}
-          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           source: "dist/*"
-          target: "/var/www/toolsy"
+          target: "/tmp/toolsy-${{ env.RELEASE }}"
+          strip_components: 1
 
 
-      ###################################
-      # Reload nginx
-      ###################################
-      - name: Reload Nginx
+      # Create release using rsync hard links
+      - name: Activate release (fast)
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.LIGHTSAIL_HOST }}
-          username: ${{ secrets.LIGHTSAIL_USER }}
-          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
+
+            RELEASE=${{ env.RELEASE }}
+            BASE=/var/www/toolsy
+            PREV=$(ls -dt $BASE/releases/* 2>/dev/null | head -1 || true)
+
+            mkdir -p $BASE/releases/$RELEASE
+
+            if [ -n "$PREV" ]; then
+              rsync -a --delete --link-dest=$PREV /tmp/toolsy-$RELEASE/ $BASE/releases/$RELEASE/
+            else
+              rsync -a /tmp/toolsy-$RELEASE/ $BASE/releases/$RELEASE/
+            fi
+
+            ln -sfn $BASE/releases/$RELEASE $BASE/current
             sudo systemctl reload nginx
+
+            rm -rf /tmp/toolsy-$RELEASE
+
