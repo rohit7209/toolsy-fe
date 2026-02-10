@@ -1,50 +1,55 @@
-name: Toolsy Frontend
+name: Deploy Frontend
 
 on:
   push:
     branches:
-      - main
+      - main   # change if your prod branch is different
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ Pull repo
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ✅ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # ✅ Faster installs
       - name: Install dependencies
         run: npm ci
 
-      - name: Build frontend
+      # ✅ Build React/Vite/etc
+      - name: Build project
         run: npm run build
 
-      # Adjust dist/ vs build/ if needed
-      - name: Upload build to server
+
+      ###################################
+      # Copy build to LIGHTSAIL
+      ###################################
+      - name: Deploy via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USER }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
-          source: "dist/*"
-          target: "/var/www/releases/${{ github.sha }}"
+          source: "build/*"
+          target: "/var/www/toolsy"
 
-      - name: Activate release
+
+      ###################################
+      # Reload nginx
+      ###################################
+      - name: Reload Nginx
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.LIGHTSAIL_HOST }}
           username: ${{ secrets.LIGHTSAIL_USER }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           script: |
-            sudo rm -rf /var/www/toolsy_old
-            if [ -d /var/www/toolsy ]; then
-              sudo mv /var/www/toolsy /var/www/toolsy_old
-            fi
-            sudo mv /var/www/releases/${{ github.sha }} /var/www/toolsy
-            sudo chown -R www-data:www-data /var/www/toolsy
             sudo systemctl reload nginx
