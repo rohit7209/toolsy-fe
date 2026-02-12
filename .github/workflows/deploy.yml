@@ -28,19 +28,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ✅ Validate env
-      - name: Validate env
-        run: |
-          if [ -z "$VITE_API_BASE_URL" ]; then
-            echo "VITE_API_BASE_URL is missing!"
-            exit 1
-          fi
-
-          if [ -z "$VITE_API_BASE_PATH" ]; then
-            echo "VITE_API_BASE_PATH is missing!"
-            exit 1
-          fi
-
       # ✅ Build Vite
       - name: Build project
         run: npm run build       
@@ -48,7 +35,6 @@ jobs:
       # ✅ Generate release id
       - name: Generate release id
         run: echo "RELEASE=$(date +%s)" >> $GITHUB_ENV
-
 
       # Upload build to temp folder
       - name: Upload build
@@ -60,7 +46,6 @@ jobs:
           source: "dist/*"
           target: "/tmp/toolsy-${{ env.RELEASE }}"
           strip_components: 1
-
 
       # Create release using rsync hard links
       - name: Activate release (fast)
@@ -88,4 +73,3 @@ jobs:
             sudo systemctl reload nginx
 
             rm -rf /tmp/toolsy-$RELEASE
-
