@@ -27,6 +27,10 @@ jobs:
       # ✅ Build React/Vite/etc
       - name: Build project
         run: npm run build
+        env:
+          VITE_API_PROTOCOL: ${{ secrets.VITE_API_PROTOCOL }}
+          VITE_API_HOST: ${{ secrets.VITE_API_HOST }}
+          VITE_API_BASE_PATH: ${{ secrets.VITE_API_BASE_PATH }}
 
       # ✅ Generate release id
       - name: Generate release id
