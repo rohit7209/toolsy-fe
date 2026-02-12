@@ -1,75 +1,358 @@
-# React + TypeScript + Vite
+# Toolsy Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the production frontend for **Toolsy**, built using **React + TypeScript + Vite**. It powers the client-facing web experience and is optimized for performance, reliability, and safe production deployments.
 
-Currently, two official plugins are available:
+This is **not a template project** — it is a production-grade application with CI/CD, atomic deployments, and rollback capabilities.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+# 📌 Purpose of This Repository
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+The frontend is designed to:
 
-Note: This will impact Vite dev & build performances.
+* Deliver a fast, modern web experience
+* Communicate seamlessly with backend APIs
+* Deploy safely without downtime
+* Allow instant rollback if a release fails
+* Remain easy for engineers to operate and debug
 
-## Expanding the ESLint configuration
+The infrastructure supporting this repo prioritizes **predictability over cleverness**.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+> Boring deployments are good deployments.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# 🧱 Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Core
+
+* **React** – UI layer
+* **TypeScript** – Type safety and maintainability
+* **Vite** – Lightning-fast build tool
+* **ESLint** – Code quality enforcement
+
+### Infrastructure
+
+* **Nginx** – Static asset serving
+* **EC2** – Hosting
+* **GitHub Actions** – CI/CD
+* **Atomic Releases** – Zero downtime deploys
+
+---
+
+# 🚀 Getting Started (Local Development)
+
+## Prerequisites
+
+* Node.js ≥ 18
+* npm / pnpm / yarn
+* Git
+
+---
+
+## Install Dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Start Development Server
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Vite will start a local server with:
+
+✅ Hot Module Replacement
+✅ Fast refresh
+✅ Type checking
+
+Default URL:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Build for Production
+
+```bash
+npm run build
+```
+
+This generates:
+
+```
+dist/
+```
+
+⚠️ Never edit files inside `dist`.
+They are build artifacts and will be replaced on every deploy.
+
+---
+
+## Preview Production Build
+
+```bash
+npm run preview
+```
+
+This simulates how the app behaves behind nginx.
+
+Always preview large UI changes before merging.
+
+---
+
+# 📂 Project Structure
+
+Typical layout:
+
+```
+src/
+ ├── components/
+ ├── pages/
+ ├── hooks/
+ ├── services/     # API integrations
+ ├── utils/
+ └── main.tsx
+
+public/
+dist/              # build output (ignored in git)
+```
+
+### Structural Philosophy
+
+* Keep components small and reusable
+* Avoid business logic inside UI
+* Centralize API calls
+* Prefer composition over inheritance
+
+---
+
+# ⚙️ Environment Configuration
+
+Environment variables are handled via Vite.
+
+Example:
+
+```
+VITE_API_BASE_URL=https://api.toolsy.xyz
+```
+
+### Rules:
+
+✅ Prefix with `VITE_`
+❌ Never commit secrets
+❌ Never hardcode API URLs
+
+---
+
+# 🧪 Linting
+
+Run:
+
+```bash
+npm run lint
+```
+
+Linting is enforced to maintain long-term code health.
+
+Strong typing + linting reduces production bugs significantly.
+
+---
+
+# 🚢 Deployment Overview (Important)
+
+Deployments are automated via **GitHub Actions**.
+
+No manual server uploads should ever happen.
+
+## High-Level Flow
+
+1. Code merged to `main`
+2. CI builds the app
+3. A versioned release is created
+4. Files uploaded to EC2
+5. `current` symlink is switched
+6. nginx reloads safely
+7. Traffic moves instantly
+
+**No downtime occurs.**
+
+---
+
+## Atomic Deployment Model
+
+Server structure:
+
+```
+/var/www/toolsy
+├── releases/
+│    ├── 1770749001
+│    ├── 1770749502
+│
+└── current -> releases/1770749502
+```
+
+nginx always serves:
+
+```
+/var/www/toolsy/current
+```
+
+Switching versions is just a symlink update — not a file overwrite.
+
+This is why deployments are safe.
+
+---
+
+# 🔁 Rollback (Production Safety)
+
+If a release causes issues:
+
+```bash
+ln -sfn releases/<previous> current
+sudo systemctl reload nginx
+```
+
+Rollback time: **~2 seconds**
+
+No rebuild required.
+
+---
+
+# 🧠 Deployment Guardrails
+
+Before activating a release:
+
+```
+index.html must exist
+```
+
+If missing → deployment aborts.
+
+This prevents broken builds from reaching users.
+
+---
+
+# 🛑 Operational Rules
+
+These are non-negotiable.
+
+### ❌ Never SSH and modify live files
+
+### ❌ Never deploy directly into `/var/www/toolsy`
+
+### ❌ Never edit old releases
+
+### ❌ Never point nginx to a specific version
+
+### ✅ Always use the CI pipeline
+
+### ✅ Always deploy via releases
+
+### ✅ Always validate builds locally
+
+---
+
+# 🐞 Debugging Production Issues
+
+When something breaks, check in this order:
+
+### 1️⃣ GitHub Actions logs
+
+### 2️⃣ Build output (`dist`)
+
+### 3️⃣ Server filesystem
+
+### 4️⃣ Symlink (`current`)
+
+### 5️⃣ Permissions
+
+### 6️⃣ nginx logs
+
+**Most issues are filesystem-related — not nginx.**
+
+---
+
+# 🧹 Maintenance
+
+Old releases accumulate over time.
+
+Keep the latest **5–7 releases**.
+
+Example cleanup:
+
+```bash
+ls -dt /var/www/toolsy/releases/* | tail -n +6 | xargs rm -rf
+```
+
+This prevents disk exhaustion.
+
+---
+
+# 🔐 Security Notes
+
+* Never expose secrets in `.env`
+* Restrict SSH access
+* Validate nginx configs before reload
+* Prefer automation over manual access
+
+---
+
+# 📈 Recommended Engineering Practices
+
+### Build before pushing large changes
+
+Prevents CI surprises.
+
+### Keep PRs focused
+
+Smaller diffs = safer deploys.
+
+### Avoid “Friday deploys”
+
+Production incidents love weekends.
+
+### Treat deploys as transactions:
+
+**Prepare → Validate → Activate**
+
+---
+
+# 🔮 Future Improvements (Planned Direction)
+
+* CDN in front of nginx for global performance
+* Staging environment
+* Health-check based auto rollback
+* Preview deployments per PR
+* Backend atomic deployments
+
+---
+
+# 🧭 Mental Model to Remember
+
+> **Releases are immutable.
+> The symlink controls traffic.
+> CI controls releases.
+> nginx stays boring.**
+
+If deploying ever feels stressful — something is wrong with the process.
+
+---
+
+# Final Note
+
+This frontend is backed by infrastructure designed for **calm production operations**.
+
+The goal is simple:
+
+👉 Deploy confidently
+👉 Rollback instantly
+👉 Sleep peacefully
+
+Welcome to Toolsy 🚀
