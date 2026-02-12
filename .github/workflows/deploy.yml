@@ -9,6 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+      VITE_API_BASE_PATH: ${{ secrets.VITE_API_BASE_PATH }}
 
     steps:
       # ✅ Pull repo
@@ -25,12 +28,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # ✅ Set env
-      - name: Set env
-        env:
-          VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
-          VITE_API_BASE_PATH: ${{ vars.VITE_API_BASE_PATH }}
-
       # ✅ Validate env
       - name: Validate env
         run: |
@@ -46,8 +43,7 @@ jobs:
 
       # ✅ Build Vite
       - name: Build project
-        run: npm run build
-       
+        run: npm run build       
 
       # ✅ Generate release id
       - name: Generate release id
