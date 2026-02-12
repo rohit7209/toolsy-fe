@@ -133,7 +133,7 @@ dist/              # build output (ignored in git)
 
 ---
 
-# ⚙️ Environment Configuration
+# ⚙️ Environment Configuration (Local)
 
 Environment variables are handled via Vite.
 
