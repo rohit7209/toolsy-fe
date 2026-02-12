@@ -25,6 +25,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # ✅ Validate env
+      - name: Validate env
+        run: |
+          if [ -z "$VITE_API_BASE_URL" ]; then
+            echo "VITE_API_BASE_URL is missing!"
+            exit 1
+          fi
+
+          if [ -z "$VITE_API_BASE_PATH" ]; then
+            echo "VITE_API_BASE_PATH is missing!"
+            exit 1
+          fi
+
       # ✅ Build React/Vite/etc
       - name: Build project
         run: npm run build
