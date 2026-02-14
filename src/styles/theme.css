@@ -81,12 +81,16 @@
     @apply border-border ring-1 ring-ring;
   }
 
-  body {
-    @apply bg-background text-foreground;
-  }
-
   html {
     font-size: var(--font-size);
+    min-height: 100%;
+    background: var(--background);
+  }
+
+  body {
+    @apply text-foreground;
+    min-height: 100%;
+    background: var(--background);
   }
 
   h1 {
