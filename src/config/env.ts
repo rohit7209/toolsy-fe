@@ -10,9 +10,7 @@ export const ENV = {
         "VITE_API_BASE_URL",
         import.meta.env.VITE_API_BASE_URL
     ),
-    API_BASE_PATH: required(
-        "VITE_API_BASE_PATH",
-        import.meta.env.VITE_API_BASE_PATH
-    ),
+    /** Optional. Omit or set to empty for APIs at root (e.g. /json/format). Was /api before backend moved to /. */
+    API_BASE_PATH: import.meta.env.VITE_API_BASE_PATH ?? "",
 };
   

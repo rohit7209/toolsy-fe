@@ -137,10 +137,11 @@ dist/              # build output (ignored in git)
 
 Environment variables are handled via Vite.
 
-Example:
+Example (APIs at root; no `/api` prefix):
 
 ```
 VITE_API_BASE_URL=https://api.toolsy.xyz
+# VITE_API_BASE_PATH is optional; omit or leave empty for APIs at /
 ```
 
 ### Rules:

@@ -3,7 +3,7 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - main   # change if your prod branch is different
+      - main
 
 jobs:
   deploy:
@@ -11,7 +11,7 @@ jobs:
     environment: production
     env:
       VITE_API_BASE_URL: ${{ vars.VITE_API_BASE_URL }}
-      VITE_API_BASE_PATH: ${{ vars.VITE_API_BASE_PATH }}
+      VITE_API_BASE_PATH: ${{ vars.VITE_API_BASE_PATH || '' }}
 
     steps:
       # ✅ Pull repo
@@ -32,10 +32,7 @@ jobs:
             exit 1
           fi
 
-          if [ -z "$VITE_API_BASE_PATH" ]; then
-            echo "VITE_API_BASE_PATH is missing!"
-            exit 1
-          fi
+          # VITE_API_BASE_PATH is optional (empty = APIs at root)
 
       # ✅ Faster installs
       - name: Install dependencies
