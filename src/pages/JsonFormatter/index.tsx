@@ -347,12 +347,12 @@ export function JsonFormatter() {
               className="hidden"
             />
           </div>
-          <div className="relative flex-1 min-h-0 flex flex-col">
+          <div className="relative flex-1 min-h-[20rem] flex flex-col">
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder='{"name":"John","age":30,"city":"New York"}'
-              className="flex-1 min-h-0 w-full bg-zinc-950 text-zinc-200 border border-zinc-900 rounded-lg p-4 font-mono text-xs leading-relaxed resize-none focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder:text-zinc-700"
+              className="flex-1 min-h-[20rem] w-full bg-zinc-950 text-zinc-200 border border-zinc-900 rounded-lg p-4 font-mono text-xs leading-relaxed resize-none focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder:text-zinc-700"
             />
             <div className="absolute top-2 right-2 flex items-center justify-end gap-1.5 group">
               <div className="flex items-center gap-1.5 overflow-hidden max-w-0 group-hover:max-w-[4rem] transition-[max-width] duration-200 ease-out justify-end">
@@ -411,12 +411,12 @@ export function JsonFormatter() {
             </div>
           </div>
 
-          <div className="relative flex-1 min-h-0 flex flex-col">
+          <div className="relative flex-1 min-h-[20rem] flex flex-col">
             <textarea
               value={output}
               readOnly
               placeholder="Formatted output..."
-              className="flex-1 min-h-0 w-full bg-zinc-950 text-purple-300 border border-zinc-900 rounded-lg p-4 font-mono text-xs leading-relaxed resize-none focus:outline-none placeholder:text-zinc-700"
+              className="flex-1 min-h-[20rem] w-full bg-zinc-950 text-purple-300 border border-zinc-900 rounded-lg p-4 font-mono text-xs leading-relaxed resize-none focus:outline-none placeholder:text-zinc-700"
             />
             <div className="absolute top-2 right-2 flex items-center justify-end gap-1.5 group">
               <div className="flex items-center gap-1.5 overflow-hidden max-w-0 group-hover:max-w-[5rem] transition-[max-width] duration-200 ease-out justify-end">
