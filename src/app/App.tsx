@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
 import { JsonFormatter } from '../pages/JsonFormatter';
 import { ComingSoon } from '../pages/ComingSoon';
+import { NotFound } from '../pages/NotFound';
 import { Toaster } from '../components/ui/sonner';
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/time-converter" element={<ComingSoon />} />
           <Route path="/hash-generator" element={<ComingSoon />} />
           <Route path="/timestamp-converter" element={<ComingSoon />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Toaster theme="dark" />
