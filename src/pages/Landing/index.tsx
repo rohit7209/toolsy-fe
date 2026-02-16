@@ -12,30 +12,30 @@ const tools = [
   {
     name: 'SQL Formatter',
     path: '/sql-formatter',
-    description: 'Pretty-print and align SQL.',
+    description: 'Format, validate, minify. AI fix and explain.',
     icon: Database,
-    live: false,
+    live: true,
   },
   {
     name: 'Time Converter',
     path: '/time-converter',
     description: 'Switch timezones and formats.',
     icon: Clock,
-    live: false,
+    live: true,
   },
   {
     name: 'Hash Generator',
     path: '/hash-generator',
     description: 'MD5, SHA hashes from text.',
     icon: Hash,
-    live: false,
+    live: true,
   },
   {
     name: 'Timestamp Converter',
     path: '/timestamp-converter',
     description: 'Epoch ↔ human-readable.',
     icon: Calendar,
-    live: false,
+    live: true,
   },
 ];
 
