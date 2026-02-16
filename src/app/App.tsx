@@ -2,7 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
 import { Landing } from '../pages/Landing';
 import { JsonFormatter } from '../pages/JsonFormatter';
-import { ComingSoon } from '../pages/ComingSoon';
+import { SqlFormatter } from '../pages/SqlFormatter';
+import { TimeConverter } from '../pages/TimeConverter';
+import { HashGenerator } from '../pages/HashGenerator';
+import { TimestampConverter } from '../pages/TimestampConverter';
 import { Toaster } from '../components/ui/sonner';
 
 export default function App() {
@@ -13,10 +16,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/json-formatter" element={<JsonFormatter />} />
-          <Route path="/sql-formatter" element={<ComingSoon />} />
-          <Route path="/time-converter" element={<ComingSoon />} />
-          <Route path="/hash-generator" element={<ComingSoon />} />
-          <Route path="/timestamp-converter" element={<ComingSoon />} />
+          <Route path="/sql-formatter" element={<SqlFormatter />} />
+          <Route path="/time-converter" element={<TimeConverter />} />
+          <Route path="/hash-generator" element={<HashGenerator />} />
+          <Route path="/timestamp-converter" element={<TimestampConverter />} />
         </Routes>
       </main>
       <Toaster theme="dark" />
