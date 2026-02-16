@@ -1,5 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
+import { Landing } from '../pages/Landing';
 import { JsonFormatter } from '../pages/JsonFormatter';
 import { ComingSoon } from '../pages/ComingSoon';
 import { Toaster } from '../components/ui/sonner';
@@ -10,7 +11,7 @@ export default function App() {
       <Navigation />
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<Navigate to="/json-formatter" replace />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/json-formatter" element={<JsonFormatter />} />
           <Route path="/sql-formatter" element={<ComingSoon />} />
           <Route path="/time-converter" element={<ComingSoon />} />
