@@ -10,7 +10,6 @@ import {
   Sparkles,
   Loader2,
   Lightbulb,
-  FileText,
   Wrench,
   MessageSquarePlus,
   X,
