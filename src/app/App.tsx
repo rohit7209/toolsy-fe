@@ -6,6 +6,7 @@ import { SqlFormatter } from '../pages/SqlFormatter';
 import { TimeConverter } from '../pages/TimeConverter';
 import { HashGenerator } from '../pages/HashGenerator';
 import { TimestampConverter } from '../pages/TimestampConverter';
+import { NotFound } from '../pages/NotFound';
 import { Toaster } from '../components/ui/sonner';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/time-converter" element={<TimeConverter />} />
           <Route path="/hash-generator" element={<HashGenerator />} />
           <Route path="/timestamp-converter" element={<TimestampConverter />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Toaster theme="dark" />
